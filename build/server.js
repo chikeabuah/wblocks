@@ -1681,14 +1681,909 @@ module.exports =
           ),
           _react2.default.createElement(
             'xml',
-            { id: 'toolbox', style: { display: 'none' } },
-            _react2.default.createElement('block', { type: 'controls_if' }),
-            _react2.default.createElement('block', { type: 'controls_repeat_ext' }),
-            _react2.default.createElement('block', { type: 'logic_compare' }),
-            _react2.default.createElement('block', { type: 'math_number' }),
-            _react2.default.createElement('block', { type: 'math_arithmetic' }),
-            _react2.default.createElement('block', { type: 'text' }),
-            _react2.default.createElement('block', { type: 'text_print' })
+            { xmlns: 'http://www.w3.org/1999/xhtml', id: 'toolbox', style: { display: 'none' } },
+            _react2.default.createElement(
+              'category',
+              { name: 'Logic', colour: '#5C81A6' },
+              _react2.default.createElement('block', { type: 'controls_if' }),
+              _react2.default.createElement(
+                'block',
+                { type: 'logic_compare' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'OP' },
+                  'EQ'
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'logic_operation' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'OP' },
+                  'AND'
+                )
+              ),
+              _react2.default.createElement('block', { type: 'logic_negate' }),
+              _react2.default.createElement(
+                'block',
+                { type: 'logic_boolean' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'BOOL' },
+                  'TRUE'
+                )
+              ),
+              _react2.default.createElement('block', { type: 'logic_null' }),
+              _react2.default.createElement('block', { type: 'logic_ternary' })
+            ),
+            _react2.default.createElement(
+              'category',
+              { name: 'Loops', colour: '#5CA65C' },
+              _react2.default.createElement(
+                'block',
+                { type: 'controls_repeat_ext' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'TIMES' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '10'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'controls_whileUntil' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'MODE' },
+                  'WHILE'
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'controls_for' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'VAR', id: 'xv!E+ljbiHLR16PB2E#(', variabletype: '' },
+                  'i'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'FROM' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '1'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'TO' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '10'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'BY' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '1'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'controls_forEach' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'VAR', id: '^_]UiWHfNCpC$~4X/~Ld', variabletype: '' },
+                  'j'
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'controls_flow_statements' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'FLOW' },
+                  'BREAK'
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'category',
+              { name: 'Math', colour: '#5C68A6' },
+              _react2.default.createElement(
+                'block',
+                { type: 'math_round' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'OP' },
+                  'ROUND'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'NUM' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '3.1'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_number' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'NUM' },
+                  '0'
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_single' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'OP' },
+                  'ROOT'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'NUM' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '9'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_trig' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'OP' },
+                  'SIN'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'NUM' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '45'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_constant' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'CONSTANT' },
+                  'PI'
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_number_property' },
+                _react2.default.createElement('mutation', { divisor_input: 'false' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'PROPERTY' },
+                  'EVEN'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'NUMBER_TO_CHECK' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '0'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_arithmetic' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'OP' },
+                  'ADD'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'A' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '1'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'B' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '1'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_on_list' },
+                _react2.default.createElement('mutation', { op: 'SUM' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'OP' },
+                  'SUM'
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_modulo' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'DIVIDEND' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '64'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'DIVISOR' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '10'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_constrain' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'VALUE' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '50'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'LOW' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '1'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'HIGH' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '100'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'math_random_int' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'FROM' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '1'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'TO' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '100'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement('block', { type: 'math_random_float' })
+            ),
+            _react2.default.createElement(
+              'category',
+              { name: 'Text', colour: '#5CA68D' },
+              _react2.default.createElement(
+                'block',
+                { type: 'text_charAt' },
+                _react2.default.createElement('mutation', { at: 'true' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'WHERE' },
+                  'FROM_START'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'VALUE' },
+                  _react2.default.createElement(
+                    'block',
+                    { type: 'variables_get' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'VAR', id: '?g}{sx=Y!vWS?fRO)W@H', variabletype: '' },
+                      'text'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text' },
+                _react2.default.createElement('field', { name: 'TEXT' })
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_append' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'VAR', id: '`EQx,NX$!Wm0R`^+Kne6', variabletype: '' },
+                  'item'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'TEXT' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement('field', { name: 'TEXT' })
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_length' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'VALUE' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'TEXT' },
+                      'abc'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_isEmpty' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'VALUE' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement('field', { name: 'TEXT' })
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_indexOf' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'END' },
+                  'FIRST'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'VALUE' },
+                  _react2.default.createElement(
+                    'block',
+                    { type: 'variables_get' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'VAR', id: '?g}{sx=Y!vWS?fRO)W@H', variabletype: '' },
+                      'text'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'FIND' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'TEXT' },
+                      'abc'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_join' },
+                _react2.default.createElement('mutation', { items: '2' })
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_getSubstring' },
+                _react2.default.createElement('mutation', { at1: 'true', at2: 'true' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'WHERE1' },
+                  'FROM_START'
+                ),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'WHERE2' },
+                  'FROM_START'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'STRING' },
+                  _react2.default.createElement(
+                    'block',
+                    { type: 'variables_get' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'VAR', id: '?g}{sx=Y!vWS?fRO)W@H', variabletype: '' },
+                      'text'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_changeCase' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'CASE' },
+                  'UPPERCASE'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'TEXT' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'TEXT' },
+                      'abc'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_trim' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'MODE' },
+                  'BOTH'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'TEXT' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'TEXT' },
+                      'abc'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_print' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'TEXT' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'TEXT' },
+                      'abc'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'text_prompt_ext' },
+                _react2.default.createElement('mutation', { type: 'TEXT' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'TYPE' },
+                  'TEXT'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'TEXT' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'TEXT' },
+                      'abc'
+                    )
+                  )
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'category',
+              { name: 'Lists', colour: '#745CA6' },
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_indexOf' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'END' },
+                  'FIRST'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'VALUE' },
+                  _react2.default.createElement(
+                    'block',
+                    { type: 'variables_get' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'VAR', id: 'REfJ+?({Y(H^%FgwT68~', variabletype: '' },
+                      'list'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_create_with' },
+                _react2.default.createElement('mutation', { items: '0' })
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_repeat' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'NUM' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '5'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement('block', { type: 'lists_length' }),
+              _react2.default.createElement('block', { type: 'lists_isEmpty' }),
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_create_with' },
+                _react2.default.createElement('mutation', { items: '3' })
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_getIndex' },
+                _react2.default.createElement('mutation', { statement: 'false', at: 'true' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'MODE' },
+                  'GET'
+                ),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'WHERE' },
+                  'FROM_START'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'VALUE' },
+                  _react2.default.createElement(
+                    'block',
+                    { type: 'variables_get' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'VAR', id: 'REfJ+?({Y(H^%FgwT68~', variabletype: '' },
+                      'list'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_setIndex' },
+                _react2.default.createElement('mutation', { at: 'true' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'MODE' },
+                  'SET'
+                ),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'WHERE' },
+                  'FROM_START'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'LIST' },
+                  _react2.default.createElement(
+                    'block',
+                    { type: 'variables_get' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'VAR', id: 'REfJ+?({Y(H^%FgwT68~', variabletype: '' },
+                      'list'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_getSublist' },
+                _react2.default.createElement('mutation', { at1: 'true', at2: 'true' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'WHERE1' },
+                  'FROM_START'
+                ),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'WHERE2' },
+                  'FROM_START'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'LIST' },
+                  _react2.default.createElement(
+                    'block',
+                    { type: 'variables_get' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'VAR', id: 'REfJ+?({Y(H^%FgwT68~', variabletype: '' },
+                      'list'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_split' },
+                _react2.default.createElement('mutation', { mode: 'SPLIT' }),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'MODE' },
+                  'SPLIT'
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'DELIM' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'text' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'TEXT' },
+                      ','
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'lists_sort' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'TYPE' },
+                  'NUMERIC'
+                ),
+                _react2.default.createElement(
+                  'field',
+                  { name: 'DIRECTION' },
+                  '1'
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'category',
+              { name: 'Colour', colour: '#A6745C' },
+              _react2.default.createElement(
+                'block',
+                { type: 'colour_picker' },
+                _react2.default.createElement(
+                  'field',
+                  { name: 'COLOUR' },
+                  '#ff0000'
+                )
+              ),
+              _react2.default.createElement('block', { type: 'colour_random' }),
+              _react2.default.createElement(
+                'block',
+                { type: 'colour_rgb' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'RED' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '100'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'GREEN' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '50'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'BLUE' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '0'
+                    )
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                'block',
+                { type: 'colour_blend' },
+                _react2.default.createElement(
+                  'value',
+                  { name: 'COLOUR1' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'colour_picker' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'COLOUR' },
+                      '#ff0000'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'COLOUR2' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'colour_picker' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'COLOUR' },
+                      '#3333ff'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'value',
+                  { name: 'RATIO' },
+                  _react2.default.createElement(
+                    'shadow',
+                    { type: 'math_number' },
+                    _react2.default.createElement(
+                      'field',
+                      { name: 'NUM' },
+                      '0.5'
+                    )
+                  )
+                )
+              )
+            ),
+            _react2.default.createElement('sep', null),
+            _react2.default.createElement('category', { name: 'Variables', colour: '#A65C81', custom: 'VARIABLE' }),
+            _react2.default.createElement('category', { name: 'Functions', colour: '#9A5CA6', custom: 'PROCEDURE' })
           )
         );
       }
