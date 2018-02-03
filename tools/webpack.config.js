@@ -170,6 +170,7 @@ const serverConfig = extend(true, {}, config, {
   ],
   node: {
     console: false,
+    fs: 'empty',
     global: false,
     process: false,
     Buffer: false,

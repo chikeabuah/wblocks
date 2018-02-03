@@ -164,7 +164,7 @@
       <field name="TEXT"></field>
     </block>
     <block type="text_append">
-      <field name="VAR" id="`EQx,NX$!Wm0R`^+Kne6" variabletype="">item</field>
+      <field name="VAR" id="f" variabletype="">item</field>
       <value name="TEXT">
         <shadow type="text">
           <field name="TEXT"></field>
