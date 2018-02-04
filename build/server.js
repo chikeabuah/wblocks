@@ -1651,19 +1651,115 @@ module.exports =
     }, {
       key: 'componentDidMount',
       value: function componentDidMount() {
-        var workspacePlayground = Blockly.inject('blockly-div', { toolbox: toolbox });
+        var workspace = Blockly.inject('blockly-div', { toolbox: toolbox });
+        function myUpdateFunction(event) {
+          var code = Blockly.JavaScript.workspaceToCode(workspace);
+          document.getElementById('js-mirror').innerHTML = code;
+          // eval(code);
+        }
+        workspace.addChangeListener(myUpdateFunction);
+        var margin = { top: 0, right: 0, bottom: 0, left: 0 },
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+  
+        var rect = [50, 50, width - 50, height - 50];
+  
+        var n = 20,
+            m = 4,
+            padding = 6,
+            maxSpeed = 3,
+            radius = d3.scale.sqrt().range([0, 8]),
+            color = d3.scale.category10().domain(d3.range(m));
+        var nodes = [];
+        var i = 0;
+  
+        for (i in d3.range(n)) {
+          nodes.push({ radius: radius(1 + Math.floor(Math.random() * 4)),
+            color: color(Math.floor(Math.random() * m)),
+            x: rect[0] + Math.random() * (rect[2] - rect[0]),
+            y: rect[1] + Math.random() * (rect[3] - rect[1]),
+            speedX: (Math.random() - 0.5) * 2 * maxSpeed,
+            speedY: (Math.random() - 0.5) * 2 * maxSpeed });
+        }
+  
+        var force = d3.layout.force().nodes(nodes).size([width, height]).gravity(0).charge(0).on("tick", tick).start();
+  
+        var svg = d3.select("#vis-container").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+        svg.append("svg:rect").attr("width", rect[2] - rect[0]).attr("height", rect[3] - rect[1]).attr("x", rect[0]).attr("y", rect[1]).style("fill", "None").style("stroke", "#222222");
+  
+        var circle = svg.selectAll("circle").data(nodes).enter().append("circle").attr("r", function (d) {
+          return d.radius;
+        }).attr("cx", function (d) {
+          return d.x;
+        }).attr("cy", function (d) {
+          return d.y;
+        }).style("fill", function (d) {
+          return d.color;
+        }).call(force.drag);
+  
+        var flag = false;
+        function tick(e) {
+          force.alpha(0.1);
+          circle.each(gravity(e.alpha)).each(collide(.5)).attr("cx", function (d) {
+            return d.x;
+          }).attr("cy", function (d) {
+            return d.y;
+          });
+        }
+  
+        // Move nodes toward cluster focus.
+        function gravity(alpha) {
+          return function (d) {
+            if (d.x - d.radius - 2 < rect[0]) d.speedX = Math.abs(d.speedX);
+            if (d.x + d.radius + 2 > rect[2]) d.speedX = -1 * Math.abs(d.speedX);
+            if (d.y - d.radius - 2 < rect[1]) d.speedY = -1 * Math.abs(d.speedY);
+            if (d.y + d.radius + 2 > rect[3]) d.speedY = Math.abs(d.speedY);
+  
+            d.x = d.x + d.speedX * alpha;
+            d.y = d.y + -1 * d.speedY * alpha;
+          };
+        }
+  
+        // Resolve collisions between nodes.
+        function collide(alpha) {
+          var quadtree = d3.geom.quadtree(nodes);
+          return function (d) {
+            var r = d.radius + radius.domain()[1] + padding,
+                nx1 = d.x - r,
+                nx2 = d.x + r,
+                ny1 = d.y - r,
+                ny2 = d.y + r;
+            quadtree.visit(function (quad, x1, y1, x2, y2) {
+              if (quad.point && quad.point !== d) {
+                var x = d.x - quad.point.x,
+                    y = d.y - quad.point.y,
+                    l = Math.sqrt(x * x + y * y),
+                    r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                if (l < r) {
+                  l = (l - r) / l * alpha;
+                  d.x -= x *= l;
+                  d.y -= y *= l;
+                  quad.point.x += x;
+                  quad.point.y += y;
+                }
+              }
+              return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            });
+          };
+        }
       }
     }, {
       key: 'render',
       value: function render() {
         var baStyle = {
           width: '35%',
-          float: 'left',
           height: '95%'
         };
   
         var bdStyle = {
-          height: '95%'
+          height: '95%',
+          width: '100%'
         };
   
         return _react2.default.createElement(
@@ -1680,13 +1776,17 @@ module.exports =
           ),
           _react2.default.createElement(
             'div',
-            { className: _ContentPage2.default.container },
-            this.props.path === '/' ? null : _react2.default.createElement(
-              'h1',
-              null,
-              this.props.title
+            null,
+            _react2.default.createElement(
+              'div',
+              { className: _ContentPage2.default.container },
+              _react2.default.createElement(
+                'pre',
+                { id: 'js-mirror' },
+                ' Hello, World '
+              )
             ),
-            _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.props.content || '' } })
+            _react2.default.createElement('div', { id: 'vis-container' })
           )
         );
       }
@@ -4235,7 +4335,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/**\r\n * React Starter Kit (https://www.reactstarterkit.com/)\r\n *\r\n * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.\r\n *\r\n * This source code is licensed under the MIT license found in the\r\n * LICENSE.txt file in the root directory of this source tree.\r\n */\r\n\r\n/*\r\n * Colors\r\n * ========================================================================== */\r\n\r\n/* #222 */\r\n\r\n/* #404040 */\r\n\r\n/* #555 */\r\n\r\n/* #777 */\r\n\r\n/* #eee */\r\n\r\n/*\r\n * Typography\r\n * ========================================================================== */\r\n\r\n/*\r\n * Layout\r\n * ========================================================================== */\r\n\r\n/*\r\n * Media queries breakpoints\r\n * ========================================================================== */\r\n\r\n/* Extra small screen / phone */\r\n\r\n/* Small screen / tablet */\r\n\r\n/* Medium screen / desktop */\r\n\r\n/* Large screen / wide desktop */\r\n\r\n/*\r\n * Animations\r\n * ========================================================================== */\r\n\r\n.ContentPage_root_1Kg {\r\n  height:100vh;\r\n  width: 100%;\r\n}\r\n\r\n.ContentPage_root_1Kg > div {\r\n  margin: 1%;\r\n}\r\n\r\n.ContentPage_container_1JT {\r\n  width: 70%;\r\n  margin: 1%;\r\n  max-width: 1000px;\r\n}", "", {"version":3,"sources":["/./src/components/ContentPage/ContentPage.scss","/./src/components/variables.scss"],"names":[],"mappings":"AAAA;;;;;;;GAOG;;ACPH;;gFAEgF;;AAGxB,UAAU;;AACV,aAAa;;AACb,UAAU;;AACV,UAAU;;AACV,UAAU;;AAElE;;gFAEgF;;AAIhF;;gFAEgF;;AAIhF;;gFAEgF;;AAEhD,gCAAgC;;AAChC,2BAA2B;;AAC3B,6BAA6B;;AAC7B,iCAAiC;;AAEjE;;gFAEgF;;ADvBhF;EACE,aAAa;EACb,YAAY;CACb;;AAED;EACE,WAAW;CACZ;;AAED;EACE,WAAW;EACX,WAAW;EACX,kBAA8B;CAC/B","file":"ContentPage.scss","sourcesContent":["/**\r\n * React Starter Kit (https://www.reactstarterkit.com/)\r\n *\r\n * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.\r\n *\r\n * This source code is licensed under the MIT license found in the\r\n * LICENSE.txt file in the root directory of this source tree.\r\n */\r\n\r\n@import '../variables.scss';\r\n\r\n.root {\r\n  height:100vh;\r\n  width: 100%;\r\n}\r\n\r\n.root > div {\r\n  margin: 1%;\r\n}\r\n\r\n.container {\r\n  width: 70%;\r\n  margin: 1%;\r\n  max-width: $max-content-width;\r\n}","/*\r\n * Colors\r\n * ========================================================================== */\r\n\r\n$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n/*\r\n * Typography\r\n * ========================================================================== */\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n/*\r\n * Layout\r\n * ========================================================================== */\r\n\r\n$max-content-width:     1000px;\r\n\r\n/*\r\n * Media queries breakpoints\r\n * ========================================================================== */\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n/*\r\n * Animations\r\n * ========================================================================== */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/**\r\n * React Starter Kit (https://www.reactstarterkit.com/)\r\n *\r\n * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.\r\n *\r\n * This source code is licensed under the MIT license found in the\r\n * LICENSE.txt file in the root directory of this source tree.\r\n */\r\n\r\n/*\r\n * Colors\r\n * ========================================================================== */\r\n\r\n/* #222 */\r\n\r\n/* #404040 */\r\n\r\n/* #555 */\r\n\r\n/* #777 */\r\n\r\n/* #eee */\r\n\r\n/*\r\n * Typography\r\n * ========================================================================== */\r\n\r\n/*\r\n * Layout\r\n * ========================================================================== */\r\n\r\n/*\r\n * Media queries breakpoints\r\n * ========================================================================== */\r\n\r\n/* Extra small screen / phone */\r\n\r\n/* Small screen / tablet */\r\n\r\n/* Medium screen / desktop */\r\n\r\n/* Large screen / wide desktop */\r\n\r\n/*\r\n * Animations\r\n * ========================================================================== */\r\n\r\n.ContentPage_root_1Kg {\r\n  height:100vh;\r\n  width: 100%;\r\n}\r\n\r\n.ContentPage_root_1Kg > div {\r\n  margin: 1%;\r\n  float: left;\r\n}\r\n\r\n.ContentPage_container_1JT {\r\n  width: 40%;\r\n}\r\n\r\n.ContentPage_container_1JT pre {\r\n  font-size: 10px;\r\n  border: 1px solid #aaa;\r\n  padding: 10px;\r\n}", "", {"version":3,"sources":["/./src/components/ContentPage/ContentPage.scss","/./src/components/variables.scss"],"names":[],"mappings":"AAAA;;;;;;;GAOG;;ACPH;;gFAEgF;;AAGxB,UAAU;;AACV,aAAa;;AACb,UAAU;;AACV,UAAU;;AACV,UAAU;;AAElE;;gFAEgF;;AAIhF;;gFAEgF;;AAIhF;;gFAEgF;;AAEhD,gCAAgC;;AAChC,2BAA2B;;AAC3B,6BAA6B;;AAC7B,iCAAiC;;AAEjE;;gFAEgF;;ADvBhF;EACE,aAAa;EACb,YAAY;CACb;;AAED;EACE,WAAW;EACX,YAAY;CACb;;AAED;EACE,WAAW;CAMZ;;AALC;EACE,gBAAgB;EAChB,uBAAuB;EACvB,cAAc;CACf","file":"ContentPage.scss","sourcesContent":["/**\r\n * React Starter Kit (https://www.reactstarterkit.com/)\r\n *\r\n * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.\r\n *\r\n * This source code is licensed under the MIT license found in the\r\n * LICENSE.txt file in the root directory of this source tree.\r\n */\r\n\r\n@import '../variables.scss';\r\n\r\n.root {\r\n  height:100vh;\r\n  width: 100%;\r\n}\r\n\r\n.root > div {\r\n  margin: 1%;\r\n  float: left;\r\n}\r\n\r\n.container {\r\n  width: 40%;\r\n  pre {\r\n    font-size: 10px;\r\n    border: 1px solid #aaa;\r\n    padding: 10px;\r\n  }\r\n}","/*\r\n * Colors\r\n * ========================================================================== */\r\n\r\n$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n/*\r\n * Typography\r\n * ========================================================================== */\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n/*\r\n * Layout\r\n * ========================================================================== */\r\n\r\n$max-content-width:     1000px;\r\n\r\n/*\r\n * Media queries breakpoints\r\n * ========================================================================== */\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n/*\r\n * Animations\r\n * ========================================================================== */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {
@@ -4979,35 +5079,50 @@ module.exports =
   buf.push("</script>");
   jade_debug.shift();
   jade_debug.unshift(new jade.DebugItem( 15, "/home/chike/wblocks/src/views/index.jade" ));
+  buf.push("<script src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/javascript_compressed.js\">");
+  jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+  jade_debug.unshift(new jade.DebugItem( 15, jade_debug[0].filename ));
+  buf.push("   ");
+  jade_debug.shift();
+  jade_debug.shift();
+  buf.push("</script>");
+  jade_debug.shift();
+  jade_debug.unshift(new jade.DebugItem( 16, "/home/chike/wblocks/src/views/index.jade" ));
   buf.push("<script src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/blocks_compressed.js\">");
   jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
   jade_debug.shift();
   buf.push("</script>");
   jade_debug.shift();
-  jade_debug.unshift(new jade.DebugItem( 16, "/home/chike/wblocks/src/views/index.jade" ));
+  jade_debug.unshift(new jade.DebugItem( 17, "/home/chike/wblocks/src/views/index.jade" ));
   buf.push("<script src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/msg/js/en.js\">");
   jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
   jade_debug.shift();
   buf.push("</script>");
   jade_debug.shift();
   jade_debug.unshift(new jade.DebugItem( 18, "/home/chike/wblocks/src/views/index.jade" ));
+  buf.push("<script src=\"http://d3js.org/d3.v3.js\">");
+  jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+  jade_debug.shift();
+  buf.push("</script>");
+  jade_debug.shift();
+  jade_debug.unshift(new jade.DebugItem( 20, "/home/chike/wblocks/src/views/index.jade" ));
   buf.push("<script>");
-  jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
-  jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
+  jade_debug.unshift(new jade.DebugItem( 22, jade_debug[0].filename ));
+  jade_debug.unshift(new jade.DebugItem( 22, jade_debug[0].filename ));
   buf.push("window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;");
   jade_debug.shift();
   buf.push("\n");
-  jade_debug.unshift(new jade.DebugItem( 20, jade_debug[0].filename ));
+  jade_debug.unshift(new jade.DebugItem( 22, jade_debug[0].filename ));
   buf.push("ga('create','" + (jade.escape((jade_interp = trackingId) == null ? '' : jade_interp)) + "','auto');ga('send','pageview')");
   jade_debug.shift();
   jade_debug.shift();
   buf.push("</script>");
   jade_debug.shift();
-  jade_debug.unshift(new jade.DebugItem( 21, "/home/chike/wblocks/src/views/index.jade" ));
+  jade_debug.unshift(new jade.DebugItem( 23, "/home/chike/wblocks/src/views/index.jade" ));
   if ( trackingId)
   {
-  jade_debug.unshift(new jade.DebugItem( 22, "/home/chike/wblocks/src/views/index.jade" ));
-  jade_debug.unshift(new jade.DebugItem( 22, "/home/chike/wblocks/src/views/index.jade" ));
+  jade_debug.unshift(new jade.DebugItem( 24, "/home/chike/wblocks/src/views/index.jade" ));
+  jade_debug.unshift(new jade.DebugItem( 24, "/home/chike/wblocks/src/views/index.jade" ));
   buf.push("<script src=\"https://www.google-analytics.com/analytics.js\" async defer>");
   jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
   jade_debug.shift();
@@ -5024,7 +5139,7 @@ module.exports =
   jade_debug.shift();
   jade_debug.shift();}.call(this,"body" in locals_for_with?locals_for_with.body:typeof body!=="undefined"?body:undefined,"css" in locals_for_with?locals_for_with.css:typeof css!=="undefined"?css:undefined,"description" in locals_for_with?locals_for_with.description:typeof description!=="undefined"?description:undefined,"entry" in locals_for_with?locals_for_with.entry:typeof entry!=="undefined"?entry:undefined,"title" in locals_for_with?locals_for_with.title:typeof title!=="undefined"?title:undefined,"trackingId" in locals_for_with?locals_for_with.trackingId:typeof trackingId!=="undefined"?trackingId:undefined));;return buf.join("");
   } catch (err) {
-    jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "doctype html\nhtml(class=\"no-js\", lang=\"\")\n  head\n    meta(charset=\"utf-8\")\n    meta(http-equiv=\"x-ua-compatible\", content=\"ie=edge\")\n    title= title\n    meta(name=\"description\", description=description)\n    meta(name=\"viewport\", content=\"width=device-width, initial-scale=1\")\n    link(rel=\"apple-touch-icon\", href=\"apple-touch-icon.png\")\n    style#css!= css\n  body\n    #app!= body\n    script(src=entry)\n    script(src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/blockly_compressed.js\")\n    script(src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/blocks_compressed.js\")\n    script(src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/msg/js/en.js\")\n\n    script.\n      window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;\n      ga('create','#{trackingId}','auto');ga('send','pageview')\n    if trackingId\n      script(src=\"https://www.google-analytics.com/analytics.js\", async=true, defer=true)\n");
+    jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "doctype html\nhtml(class=\"no-js\", lang=\"\")\n  head\n    meta(charset=\"utf-8\")\n    meta(http-equiv=\"x-ua-compatible\", content=\"ie=edge\")\n    title= title\n    meta(name=\"description\", description=description)\n    meta(name=\"viewport\", content=\"width=device-width, initial-scale=1\")\n    link(rel=\"apple-touch-icon\", href=\"apple-touch-icon.png\")\n    style#css!= css\n  body\n    #app!= body\n    script(src=entry)\n    script(src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/blockly_compressed.js\")\n    script(src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/javascript_compressed.js\")    \n    script(src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/blocks_compressed.js\")\n    script(src=\"https://cdn.jsdelivr.net/npm/blockly@1.0.0/msg/js/en.js\")\n    script(src=\"http://d3js.org/d3.v3.js\")\n\n    script.\n      window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;\n      ga('create','#{trackingId}','auto');ga('send','pageview')\n    if trackingId\n      script(src=\"https://www.google-analytics.com/analytics.js\", async=true, defer=true)\n");
   }
   }
 

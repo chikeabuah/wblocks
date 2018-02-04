@@ -16,10 +16,14 @@
 
 .root > div {
   margin: 1%;
+  float: left;
 }
 
 .container {
-  width: 70%;
-  margin: 1%;
-  max-width: $max-content-width;
+  width: 40%;
+  pre {
+    font-size: 10px;
+    border: 1px solid #aaa;
+    padding: 10px;
+  }
 }
